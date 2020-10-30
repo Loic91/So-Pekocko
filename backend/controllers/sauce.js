@@ -106,20 +106,20 @@ exports.delete = (req, res, next) => {
 
 //LIKE SAUCE
 exports.likeSauce = (req, res, next) => {
+  //Utilisation de l'instruction "switch" pour exécuter du code en fonction de la valeur choisie par l'utilisateur. L’instruction switch s’articule autour de "case" qui sont des « cas » ou des « issues » possibles.
   switch (req.body.like) {
-    //cancel = 0
-    //check if the user had liked or disliked the sauce
-    //uptade the sauce, send message/error
+    //vérifie si l'utilisateur a Liké ou disLiké la sauce
+    //met à jour la sauce, envoyer un message / erreur
     case 0:
       Sauce.findOne({ _id: req.params.id })
         .then((sauce) => {
-          if (sauce.usersLiked.find(user => user === req.body.userId)) {
+          if (sauce.usersLiked.find(user => user === req.body.userId)) { //=== : Egalité stricte - Renvoie true si les opérandes sont égaux et de même type. 
             Sauce.updateOne({ _id: req.params.id }, {
-              $inc: { likes: -1 },
-              $pull: { usersLiked: req.body.userId },
+              $inc: { likes: -1 }, //$inc : Incrémente la valeur du champ du montant spécifié. https://docs.mongodb.com/manual/reference/operator/update/
+              $pull: { usersLiked: req.body.userId }, //$pull : Supprime tous les éléments du tableau qui correspondent à une requête spécifiée.
               _id: req.params.id
             })
-              .then(() => { res.status(201).json({ message: 'Ton avis a été pris en compte!' }); })
+              .then(() => { res.status(201).json({ message: 'Votre avis a bien été pris en compte!' }); })
               .catch((error) => { res.status(400).json({ error: error }); });
 
           } if (sauce.usersDisliked.find(user => user === req.body.userId)) {
@@ -128,14 +128,14 @@ exports.likeSauce = (req, res, next) => {
               $pull: { usersDisliked: req.body.userId },
               _id: req.params.id
             })
-              .then(() => { res.status(201).json({ message: 'Ton avis a été pris en compte!' }); })
+              .then(() => { res.status(201).json({ message: 'Votre avis a bien été pris en compte!' }); })
               .catch((error) => { res.status(400).json({ error: error }); });
           }
         })
         .catch((error) => { res.status(404).json({ error: error }); });
       break;
     //likes = 1
-    //uptade the sauce, send message/error
+    //met à jour la sauce, envoyer un message / erreur
     case 1:
       Sauce.updateOne({ _id: req.params.id }, {
         $inc: { likes: 1 },
@@ -146,7 +146,7 @@ exports.likeSauce = (req, res, next) => {
         .catch((error) => { res.status(400).json({ error: error }); });
       break;
     //likes = -1
-    //uptade the sauce, send message/error
+    //met à jour la sauce, envoyer un message / erreur
     case -1:
       Sauce.updateOne({ _id: req.params.id }, {
         $inc: { dislikes: 1 },
@@ -157,6 +157,6 @@ exports.likeSauce = (req, res, next) => {
         .catch((error) => { res.status(400).json({ error: error }); });
       break;
     default:
-      console.error('not today : mauvaise requête');
+      console.error('La requête est mauvaise');
   }
 };
