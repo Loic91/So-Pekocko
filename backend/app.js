@@ -1,3 +1,7 @@
+require('dotenv').config()
+//Initialize DB
+require('./initDB')();
+
 const express = require('express'); 
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -6,13 +10,6 @@ const sauceRoutes = require('./route/sauce');
 const userRoutes = require('./route/user'); 
 
 const app = express();
-
-//Connection de l'API au cluster MongoDB
-mongoose.connect('mongodb+srv://loic_91:Kiyammonfilsdamour2015@cluster0.ijazw.mongodb.net/<dbname>?retryWrites=true&w=majority',
-  { useNewUrlParser: true,
-    useUnifiedTopology: true })
-  .then(() => console.log('Connexion à MongoDB réussie !'))
-  .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');

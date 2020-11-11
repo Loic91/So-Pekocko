@@ -1,8 +1,9 @@
 //CREATION OU CONNECTION DES UTILISATEURS
 const bcrypt = require("bcrypt"); 
 const jwt = require("jsonwebtoken");
-
 const User = require("../models/User"); 
+
+const TOKEN = process.env.TOKEN;
 
 exports.signup = (req, res, next) => {
   bcrypt

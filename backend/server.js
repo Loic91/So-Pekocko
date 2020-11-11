@@ -2,6 +2,9 @@
 const http = require('http');
 const app = require('./app');
 
+//Initialize DB
+require('./initDB')();
+
 const normalizePort = val => {
   const port = parseInt(val, 10);
   if (isNaN(port)) { 
